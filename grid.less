@@ -1,0 +1,50 @@
+@import "variables.less";
+
+.grid {
+    width: 100%;
+    max-width: @maxWidth;
+    margin: 0 auto;
+}
+
+.row {
+    padding-bottom: @padding;
+    overflow: hidden;
+
+    &:last-of-type {
+        padding-bottom: 0px;
+    }
+}
+
+[class*='col-'] {
+    @media @small {
+        width: auto;
+        padding-bottom: @padding;
+
+        &:last-of-type {
+            padding-bottom: 0px;
+        }
+    }
+    @media @medium {
+        float: left;
+        padding-right: @padding;
+
+        &:last-of-type {
+            padding-right: 0px;
+        }
+    }
+}
+
+.numerator (@num) when (@num > 0) {
+    .denominator (@den) when (@den >= @num) {
+        @fraction: @num / @den;
+        .col-@{num}-@{den} {
+            @media @medium {
+                width: round(percentage(@fraction), @decimalPlace);
+            }
+        }
+        .denominator(@den - 1);
+    }
+    .denominator(@fractions);
+    .numerator(@num - 1);
+}
+.numerator(@fractions);
